@@ -1,0 +1,2 @@
+vgg16 construct：https://www.kaggle.com/code/karan842/species-classification-92-vgg16-w-b/notebook#Saving-best-model
+Keras tuner：https://neptune.ai/blog/keras-tuner-tuning-hyperparameters-deep-learning-model
