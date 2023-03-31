@@ -4,11 +4,13 @@ import glob as gb
 import random
 import tensorflow as tf
 import keras_tuner as KT
-from keras.applications import VGG16
-from keras.applications.vgg16 import preprocess_input
+# from keras.applications import VGG16
+from keras.applications import VGG19
+# from keras.applications.vgg16 import preprocess_input
+from keras.applications.vgg19 import preprocess_input
 from matplotlib import pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator
-from keras.optimizers import Adam, SGD
+from keras.optimizers import Adam, SGD, Nadam
 from tensorflow import keras
 
 # Enable GPU
@@ -134,11 +136,11 @@ plt.show()
 
 # ------Model Learning------
 # 1) Base model (transfer learning)
-base_model = VGG16(include_top=False, input_shape=(224, 224, 3), weights="imagenet")
+base_model = VGG19(include_top=False, input_shape=(224, 224, 3), weights="imagenet")
 base_model.trainable = True
 # enable trainable for last set of convolutional layers
 for layer in base_model.layers:
-    if layer.name not in ['block5_conv1', 'block5_conv2', 'block5_conv3']:
+    if layer.name not in ['block5_conv1', 'block5_conv2', 'block5_conv3', 'block5_conv4']:
         layer.trainable = False
 base_model.summary()
 
@@ -161,7 +163,7 @@ def build_model(hp):
     model.add(keras.layers.Flatten())
     # add FC layer(s)
     for i in range(hp.Int('Num_FC_Layers', 1, 3)):
-        model.add(keras.layers.Dense(units=hp.Choice('FC_Layer_Units', values=[2048, 4096]),
+        model.add(keras.layers.Dense(units=hp.Choice('FC_Layer_Units', values=[512, 1024, 2048]),
                                      activation='relu'))
     # add dropout layer to prevent overfitting
     for i in range(hp.Int('Num_Dropout_Layers', 0, 1)):
@@ -171,7 +173,7 @@ def build_model(hp):
 
     # Adam and SGD are two candidate optimizers
     opt = [Adam(learning_rate=hp.Choice('Learning_Rate', values=[1e-4, 5e-5, 1e-5])),
-           SGD(learning_rate=hp.Choice('Learning_Rate', values=[1e-4, 5e-5, 1e-5]))]
+           Nadam(beta_1=0.9, beta_2=0.999, epsilon=1e-07, learning_rate=hp.Choice('Learning_Rate', values=[1e-4, 5e-5, 1e-5]))]
     # here 0 represents the Adam and 1 represents the SGD
     model.compile(optimizer=opt[hp.Choice('Optimizer', values=[0, 1])],
                   loss='categorical_crossentropy', metrics=['accuracy'])
@@ -179,21 +181,23 @@ def build_model(hp):
 
 
 # 3) Fine tuning
-tuner = KT.RandomSearch(hypermodel=build_model, objective="val_accuracy", max_trials=30,
-                        directory='./tuner', project_name='ece9039_project_tuner',
-                        executions_per_trial=2)
+tuner = KT.RandomSearch(hypermodel=build_model, objective="val_loss", max_trials=30,
+                        directory='./tuner', project_name='ece9039_project_tuner_VGG19',
+                        executions_per_trial=1)
 tuner.search_space_summary()
 tuner.search(train_set, epochs=1, validation_data=val_set)
 # save the best model
 best_model = tuner.get_best_models()[0]
 best_model.summary()
-best_model.save('Best_VGG16_Unfit')
+best_model.save('Best_VGG19_Unfit')
 
 
 # 4) Find the best epoch value
-best_model = keras.models.load_model('Best_VGG16_Unfit')
+# set up early stopping
+callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
+best_model = keras.models.load_model('Best_VGG19_Unfit')
 history = best_model.fit(train_set, epochs=20, validation_data=val_set)
-best_model.save('Best_VGG16_Fitted')
+best_model.save('Best_VGG19_Fitted')
 
 
 # 5) Plot epoch vs validation loss and epoch vs accuracy
@@ -225,7 +229,7 @@ plt.show()
 
 # ------Result------
 # 1) Fitted model predict on test set
-model = keras.models.load_model('Best_VGG16_Fitted')
+model = keras.models.load_model('Best_VGG19_Fitted')
 model.evaluate(test_set)
 
 # 2) Plot samples from prediction
