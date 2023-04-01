@@ -163,11 +163,11 @@ def build_model(hp):
     model.add(keras.layers.Flatten())
     # add FC layer(s)
     for i in range(hp.Int('Num_FC_Layers', 1, 3)):
-        model.add(keras.layers.Dense(units=hp.Choice('FC_Layer_Units', values=[512, 1024, 2048]),
+        model.add(keras.layers.Dense(units=hp.Choice('FC_Layer_Units', values=[1024, 2048]),
                                      activation='relu'))
     # add dropout layer to prevent overfitting
     for i in range(hp.Int('Num_Dropout_Layers', 0, 1)):
-        model.add(keras.layers.Dropout(hp.Choice('Dropout_Rate', values=[0.1, 0.2])))
+        model.add(keras.layers.Dropout(hp.Choice('Dropout_Rate', values=[0.1, 0.5])))
     # add output layer
     model.add(keras.layers.Dense(units=250, activation='softmax', name='Output_Layer'))
 
@@ -185,7 +185,7 @@ tuner = KT.RandomSearch(hypermodel=build_model, objective="val_loss", max_trials
                         directory='./tuner', project_name='ece9039_project_tuner_VGG19',
                         executions_per_trial=1)
 tuner.search_space_summary()
-tuner.search(train_set, epochs=1, validation_data=val_set)
+tuner.search(train_set, epochs=5, validation_data=val_set)
 # save the best model
 best_model = tuner.get_best_models()[0]
 best_model.summary()
@@ -194,9 +194,9 @@ best_model.save('Best_VGG19_Unfit')
 
 # 4) Find the best epoch value
 # set up early stopping
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
+callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5)
 best_model = keras.models.load_model('Best_VGG19_Unfit')
-history = best_model.fit(train_set, epochs=20, validation_data=val_set)
+history = best_model.fit(train_set, epochs=50, validation_data=val_set)
 best_model.save('Best_VGG19_Fitted')
 
 
