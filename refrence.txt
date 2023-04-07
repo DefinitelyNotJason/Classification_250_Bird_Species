@@ -1,2 +1,5 @@
-vgg16 construct：https://www.kaggle.com/code/karan842/species-classification-92-vgg16-w-b/notebook#Saving-best-model
-Keras tuner：https://neptune.ai/blog/keras-tuner-tuning-hyperparameters-deep-learning-model
+1. vgg16 construct：https://www.kaggle.com/code/karan842/species-classification-92-vgg16-w-b/notebook#Saving-best-model
+2. Keras tuner：https://neptune.ai/blog/keras-tuner-tuning-hyperparameters-deep-learning-model
+3. L. Souquet, N. Shvai, A. Llanza and A. Nakib, "Hyperparameters optimization for neural network training using Fractal Decomposition-based Algorithm," 2020 IEEE Congress on Evolutionary Computation (CEC), Glasgow, UK, 2020, pp. 1-6, doi: 10.1109/CEC48606.2020.9185599.
+4. L. Souquet, N. Shvai, A. Llanza and A. Nakib, "Hyperparameters optimization for neural network training using Fractal Decomposition-based Algorithm," 2020 IEEE Congress on Evolutionary Computation (CEC), Glasgow, UK, 2020, pp. 1-6, doi: 10.1109/CEC48606.2020.9185599.
+
