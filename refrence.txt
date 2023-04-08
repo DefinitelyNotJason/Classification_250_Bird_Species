@@ -1,5 +1,9 @@
 1. vgg16 construct：https://www.kaggle.com/code/karan842/species-classification-92-vgg16-w-b/notebook#Saving-best-model
 2. Keras tuner：https://neptune.ai/blog/keras-tuner-tuning-hyperparameters-deep-learning-model
 3. L. Souquet, N. Shvai, A. Llanza and A. Nakib, "Hyperparameters optimization for neural network training using Fractal Decomposition-based Algorithm," 2020 IEEE Congress on Evolutionary Computation (CEC), Glasgow, UK, 2020, pp. 1-6, doi: 10.1109/CEC48606.2020.9185599.
-4. L. Souquet, N. Shvai, A. Llanza and A. Nakib, "Hyperparameters optimization for neural network training using Fractal Decomposition-based Algorithm," 2020 IEEE Congress on Evolutionary Computation (CEC), Glasgow, UK, 2020, pp. 1-6, doi: 10.1109/CEC48606.2020.9185599.
+4. J. Tao, Y. Gu, J. Sun, Y. Bie and H. Wang, "Research on vgg16 convolutional neural network feature classification algorithm based on Transfer Learning," 2021 2nd China International SAR Symposium (CISS), Shanghai, China, 2021, pp. 1-3, doi: 10.23919/CISS51089.2021.9652277.
+5. https://www.geeksforgeeks.org/vgg-16-cnn-model/
+6. https://androidkt.com/explain-pooling-layers-max-pooling-average-pooling-global-average-pooling-and-global-max-pooling/
+7. https://www.researchgate.net/figure/llustration-of-the-network-architecture-of-VGG-19-model-conv-means-convolution-FC-means_fig2_325137356
+8. L. Fan and Z. Long, "Optimization of Nadam algorithm for image denoising based on convolutional neural network," 2020 7th International Conference on Information Science and Control Engineering (ICISCE), Changsha, China, 2020, pp. 957-961, doi: 10.1109/ICISCE50968.2020.00197.
 
